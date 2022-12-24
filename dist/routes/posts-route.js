@@ -42,52 +42,52 @@ const createBlogIdValidation = (0, express_validator_1.body)('blogId')
     return true;
 })).withMessage({ "message": "blogId not exist", "field": "blogId" });
 // GET Returns All posts
-exports.postsRouter.get('/', (req, res) => {
-    const allPosts = posts_repository_1.postsRepository.getAllPosts();
+exports.postsRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const allPosts = yield posts_repository_1.postsRepository.getAllPosts();
     res.status(200).send(allPosts);
-});
+}));
 //GET return post bi id
-exports.postsRouter.get('/:id', (req, res) => {
-    let foundPost = posts_repository_1.postsRepository.getPostByID(req.params.id.toString());
+exports.postsRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let foundPost = yield posts_repository_1.postsRepository.getPostByID(req.params.id.toString());
     if (foundPost) {
         res.status(200).send(foundPost);
     }
     else {
         res.sendStatus(404);
     }
-});
+}));
 //GET return post bi id
-exports.postsRouter.get('/blogid/:id', (req, res) => {
-    let foundPost = posts_repository_1.postsRepository.getPostByBlogsID(req.params.id.toString());
+exports.postsRouter.get('/blogid/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let foundPost = yield posts_repository_1.postsRepository.getPostByBlogsID(req.params.id.toString());
     if (foundPost) {
         res.status(200).send(foundPost);
     }
     else {
         res.sendStatus(404);
     }
-});
+}));
 // POST add blogs
-exports.postsRouter.post('/', basic_auth_middleware_1.basicAuthMiddleware, titleValidation, shortDescriptionValidation, contentValidation, createBlogIdValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
-    const newPost = posts_repository_1.postsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
+exports.postsRouter.post('/', basic_auth_middleware_1.basicAuthMiddleware, titleValidation, shortDescriptionValidation, contentValidation, createBlogIdValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newPost = yield posts_repository_1.postsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     res.status(201).send(newPost);
-});
+}));
 // PUT update post
-exports.postsRouter.put('/:id', basic_auth_middleware_1.basicAuthMiddleware, shortDescriptionValidation, titleValidation, contentValidation, createBlogIdValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
-    const updatePost = posts_repository_1.postsRepository.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
+exports.postsRouter.put('/:id', basic_auth_middleware_1.basicAuthMiddleware, shortDescriptionValidation, titleValidation, contentValidation, createBlogIdValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatePost = yield posts_repository_1.postsRepository.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     if (updatePost) {
         res.sendStatus(204);
     }
     else {
         res.sendStatus(404);
     }
-});
+}));
 // DELETE post
-exports.postsRouter.delete('/:id', basic_auth_middleware_1.basicAuthMiddleware, (req, res) => {
-    const isDeleted = posts_repository_1.postsRepository.deletePost(req.params.id);
+exports.postsRouter.delete('/:id', basic_auth_middleware_1.basicAuthMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const isDeleted = yield posts_repository_1.postsRepository.deletePost(req.params.id);
     if (isDeleted) {
         return res.sendStatus(204);
     }
     else {
         res.sendStatus(404);
     }
-});
+}));

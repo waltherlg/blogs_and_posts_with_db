@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRouter = void 0;
 const express_1 = require("express");
@@ -18,38 +27,38 @@ const websiteUrlValidation = (0, express_validator_1.body)('websiteUrl')
     .isLength({ max: 100 }).bail().withMessage({ "message": "wrong length websiteUrl", "field": "websiteUrl" })
     .isURL().bail().withMessage({ "message": "wrong websiteUrl", "field": "websiteUrl" });
 // GET Returns All blogs
-exports.blogsRouter.get('/', (req, res) => {
-    const allBlogs = blogs_repository_1.blogsRepository.getAllBlogs();
+exports.blogsRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const allBlogs = yield blogs_repository_1.blogsRepository.getAllBlogs();
     res.status(200).send(allBlogs);
-});
+}));
 // POST add blogs
-exports.blogsRouter.post('/', basic_auth_middleware_1.basicAuthMiddleware, input_validation_middleware_2.nameValidation, descriptionValidation, websiteUrlValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
-    const newBlog = blogs_repository_1.blogsRepository.createBlog(req.body.name, req.body.description, req.body.websiteUrl);
+exports.blogsRouter.post('/', basic_auth_middleware_1.basicAuthMiddleware, input_validation_middleware_2.nameValidation, descriptionValidation, websiteUrlValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newBlog = yield blogs_repository_1.blogsRepository.createBlog(req.body.name, req.body.description, req.body.websiteUrl);
     res.status(201).send(newBlog);
-});
+}));
 //GET blog buy id
-exports.blogsRouter.get('/:id', (req, res) => {
-    let foundBlog = blogs_repository_1.blogsRepository.getBlogByID(req.params.id.toString());
+exports.blogsRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let foundBlog = yield blogs_repository_1.blogsRepository.getBlogByID(req.params.id.toString());
     if (foundBlog) {
         res.status(200).send(foundBlog);
     }
     else {
         res.sendStatus(404);
     }
-});
+}));
 // DELETE blog video by id
-exports.blogsRouter.delete('/:id', basic_auth_middleware_1.basicAuthMiddleware, (req, res) => {
-    const isDeleted = blogs_repository_1.blogsRepository.deleteBlog(req.params.id);
+exports.blogsRouter.delete('/:id', basic_auth_middleware_1.basicAuthMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const isDeleted = yield blogs_repository_1.blogsRepository.deleteBlog(req.params.id);
     if (isDeleted) {
         res.sendStatus(204);
     }
     else {
         res.sendStatus(404);
     }
-});
+}));
 // PUT update blogs by id
-exports.blogsRouter.put('/:id', basic_auth_middleware_1.basicAuthMiddleware, input_validation_middleware_2.nameValidation, descriptionValidation, websiteUrlValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
-    const updateBlog = blogs_repository_1.blogsRepository.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
+exports.blogsRouter.put('/:id', basic_auth_middleware_1.basicAuthMiddleware, input_validation_middleware_2.nameValidation, descriptionValidation, websiteUrlValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const updateBlog = yield blogs_repository_1.blogsRepository.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
     if (updateBlog) {
         const blog = blogs_repository_1.blogsRepository.getBlogByID(req.params.id);
         res.sendStatus(204);
@@ -57,4 +66,4 @@ exports.blogsRouter.put('/:id', basic_auth_middleware_1.basicAuthMiddleware, inp
     else {
         res.sendStatus(404);
     }
-});
+}));

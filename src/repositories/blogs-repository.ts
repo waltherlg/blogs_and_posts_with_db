@@ -28,12 +28,13 @@ let blogs: Array<blogType> = [
 ]
 
 export const blogsRepository = {
-    getBlogByID(id: string) {
+    async getBlogByID(id: string | null | undefined): Promise<blogType | undefined> {
         let blog = blogs.find(b => b.id === id);
         return blog
+
     },
 
-    getAllBlogs() {
+    async getAllBlogs(): Promise<blogType[]> {
         return blogs
     },
 
@@ -48,7 +49,7 @@ export const blogsRepository = {
         return newBlog
     },
 
-    updateBlog(id: string, name: string, description: string, websiteUrl: string){
+    async updateBlog(id: string, name: string, description: string, websiteUrl: string): Promise<boolean>{
         let blog = blogs.find(b => b.id === id);
         if (blog) {
             blog.name = name
@@ -61,7 +62,7 @@ export const blogsRepository = {
         }
     },
 
-    deleteBlog(id: string){
+    async deleteBlog(id: string): Promise<boolean>{
         for (let i = 0; i < blogs.length; i++){
             if (blogs[i].id === id){
                 blogs.splice(i, 1);
@@ -73,9 +74,9 @@ export const blogsRepository = {
 
     },
 
-    deleteAllBlogs() {
+    async deleteAllBlogs(): Promise<boolean> {
         blogs.splice(0);
-        return blogs
+        return true
     },
 }
 

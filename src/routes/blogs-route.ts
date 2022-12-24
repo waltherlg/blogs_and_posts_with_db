@@ -21,8 +21,8 @@ const websiteUrlValidation = body('websiteUrl')
     .isURL().bail().withMessage({"message": "wrong websiteUrl", "field": "websiteUrl" })
 
 // GET Returns All blogs
-blogsRouter.get('/', (req: Request, res: Response) => {
-    const allBlogs = blogsRepository.getAllBlogs()
+blogsRouter.get('/', async (req: Request, res: Response) => {
+    const allBlogs = await blogsRepository.getAllBlogs()
     res.status(200).send(allBlogs);
 })
 
@@ -33,15 +33,15 @@ blogsRouter.post('/',
     descriptionValidation,
     websiteUrlValidation,
     inputValidationMiddleware,
-    (req: Request, res: Response) => {
-        const newBlog = blogsRepository.createBlog(req.body.name, req.body.description, req.body.websiteUrl)
+    async (req: Request, res: Response) => {
+        const newBlog = await blogsRepository.createBlog(req.body.name, req.body.description, req.body.websiteUrl)
         res.status(201).send(newBlog)
 
-})
+    })
 
 //GET blog buy id
 blogsRouter.get('/:id', async (req: Request, res: Response) => {
-    let foundBlog = blogsRepository.getBlogByID(req.params.id.toString())
+    let foundBlog = await blogsRepository.getBlogByID(req.params.id.toString())
     if(foundBlog){
         res.status(200).send(foundBlog)
     }
@@ -53,15 +53,14 @@ blogsRouter.get('/:id', async (req: Request, res: Response) => {
 // DELETE blog video by id
 blogsRouter.delete('/:id',
     basicAuthMiddleware,
-    (req, res) => {
-    const isDeleted = blogsRepository.deleteBlog(req.params.id)
-        if(isDeleted){
+    async (req, res) => {
+        const isDeleted = await blogsRepository.deleteBlog(req.params.id)
+        if (isDeleted) {
             res.sendStatus(204)
-        }
-        else {
+        } else {
             res.sendStatus(404);
         }
-})
+    })
 
 // PUT update blogs by id
 blogsRouter.put('/:id',

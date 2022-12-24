@@ -10,7 +10,7 @@ const fs = require("fs");
 var path = require('path');
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 
 app.use(bodyParser.json());
@@ -20,6 +20,11 @@ app.use('/blogs', blogsRouter)
 app.use('/posts', postsRouter)
 
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+const startApp = async () => {
+    await runDB()
+    app.listen(port, () => {
+        console.log(`Example app listening on port ${port}`)
+    })
+}
+
+startApp()

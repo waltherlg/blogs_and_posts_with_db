@@ -38,21 +38,21 @@ let posts: Array<postType> = [
 
 export const postsRepository = {
 
-    getPostByID(id: string | undefined) {
+    async getPostByID(id: string | undefined): Promise<postType | undefined> {
         const post = posts.find(p => p.id === id);
         return post
     },
 
-    getPostByBlogsID(blogId: string | undefined) {
+    async getPostByBlogsID(blogId: string | undefined): Promise<postType | undefined> {
         const post = posts.find(p => p.blogId === blogId);
         return post
     },
 
-    getAllPosts() {
+    async getAllPosts() {
         return posts
     },
 
-    createPost(title: string, shortDescription: string, content: string, blogId: string) {
+    async createPost(title: string, shortDescription: string, content: string, blogId: string): Promise<postType> {
         const newPost: any = {
             "id": (+(new Date())).toString(),
             "title": title,
@@ -65,7 +65,7 @@ export const postsRepository = {
         return newPost
     },
 
-    updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string){
+    async updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string): Promise<boolean> {
         let post = posts.find(p => p.id === id);
         if (post) {
             post.title = title
@@ -79,7 +79,7 @@ export const postsRepository = {
         }
     },
 
-    deletePost(id: string){
+    async deletePost(id: string): Promise<boolean> {
         for (let i = 0; i < posts.length; i++){
             if (posts[i].id === id){
                 posts.splice(i, 1);
@@ -89,8 +89,8 @@ export const postsRepository = {
         return false
     },
 
-    deleteAllPosts() {
+    async deleteAllPosts(): Promise<boolean> {
         posts.splice(0);
-        return posts
+        return true
     },
 }

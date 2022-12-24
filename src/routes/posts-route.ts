@@ -41,29 +41,27 @@ const createBlogIdValidation = body('blogId')
 
 
 // GET Returns All posts
-postsRouter.get('/', (req: Request, res: Response) => {
-    const  allPosts = postsRepository.getAllPosts()
+postsRouter.get('/', async (req: Request, res: Response) => {
+    const allPosts = await postsRepository.getAllPosts()
     res.status(200).send(allPosts);
 })
 
 //GET return post bi id
-postsRouter.get('/:id', (req, res) => {
-    let foundPost = postsRepository.getPostByID(req.params.id.toString())
-    if(foundPost){
+postsRouter.get('/:id', async (req, res) => {
+    let foundPost = await postsRepository.getPostByID(req.params.id.toString())
+    if (foundPost) {
         res.status(200).send(foundPost)
-    }
-    else {
+    } else {
         res.sendStatus(404)
     }
 })
 
 //GET return post bi id
-postsRouter.get('/blogid/:id', (req, res) => {
-    let foundPost = postsRepository.getPostByBlogsID(req.params.id.toString())
-    if(foundPost){
+postsRouter.get('/blogid/:id', async (req, res) => {
+    let foundPost = await postsRepository.getPostByBlogsID(req.params.id.toString())
+    if (foundPost) {
         res.status(200).send(foundPost)
-    }
-    else {
+    } else {
         res.sendStatus(404)
     }
 })
@@ -76,8 +74,8 @@ postsRouter.post('/',
     contentValidation,
     createBlogIdValidation,
     inputValidationMiddleware,
-    (req: Request, res: Response) => {
-        const newPost = postsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
+    async (req: Request, res: Response) => {
+        const newPost = await postsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
         res.status(201).send(newPost)
     })
 
@@ -89,12 +87,11 @@ postsRouter.put('/:id',
     contentValidation,
     createBlogIdValidation,
     inputValidationMiddleware,
-    (req: Request, res: Response) => {
-        const updatePost = postsRepository.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
-        if (updatePost){
+    async (req: Request, res: Response) => {
+        const updatePost = await postsRepository.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
+        if (updatePost) {
             res.sendStatus(204)
-        }
-        else {
+        } else {
             res.sendStatus(404)
         }
     })
@@ -102,12 +99,11 @@ postsRouter.put('/:id',
 // DELETE post
 postsRouter.delete('/:id',
     basicAuthMiddleware,
-    (req: Request, res: Response) => {
-        const isDeleted = postsRepository.deletePost(req.params.id)
-        if(isDeleted){
+    async (req: Request, res: Response) => {
+        const isDeleted = await postsRepository.deletePost(req.params.id)
+        if (isDeleted) {
             return res.sendStatus(204)
-        }
-        else {
+        } else {
             res.sendStatus(404);
         }
     })
