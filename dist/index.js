@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const blogs_route_1 = require("./routes/blogs-route");
 const posts_route_1 = require("./routes/posts-route");
 const testing_route_1 = require("./routes/testing-route");
+const db_1 = require("./repositories/db");
 const bodyParser = require('body-parser');
 const fs = require("fs");
 var path = require('path');
@@ -26,7 +27,7 @@ app.use('/testing/all-data', testing_route_1.testingRouter);
 app.use('/blogs', blogs_route_1.blogsRouter);
 app.use('/posts', posts_route_1.postsRouter);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield runDB();
+    yield (0, db_1.runDb)();
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`);
     });

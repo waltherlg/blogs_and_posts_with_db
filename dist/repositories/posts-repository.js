@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRepository = void 0;
+const db_1 = require("./db");
 let posts = [
     {
         "id": "firspost",
@@ -36,22 +37,33 @@ let posts = [
         "blogName": "blogName3"
     },
 ];
+const postCollection = db_1.client.db("blogsAndPosts").collection("post");
 exports.postsRepository = {
     getPostByID(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = posts.find(p => p.id === id);
-            return post;
+            const post = yield postCollection.findOne({ id: id });
+            if (post) {
+                return post;
+            }
+            else {
+                return null;
+            }
         });
     },
     getPostByBlogsID(blogId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = posts.find(p => p.blogId === blogId);
-            return post;
+            const post = yield postCollection.findOne({ blogId: blogId });
+            if (post) {
+                return post;
+            }
+            else {
+                return null;
+            }
         });
     },
     getAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
-            return posts;
+            return yield postCollection.find({}).toArray();
         });
     },
     createPost(title, shortDescription, content, blogId) {
@@ -64,39 +76,26 @@ exports.postsRepository = {
                 "blogId": blogId,
                 "blogName": content + " " + title
             };
-            posts.push(newPost);
+            const result = yield postCollection.insertOne(newPost);
             return newPost;
         });
     },
     updatePost(id, title, shortDescription, content, blogId) {
         return __awaiter(this, void 0, void 0, function* () {
-            let post = posts.find(p => p.id === id);
-            if (post) {
-                post.title = title;
-                post.shortDescription = shortDescription;
-                post.content = content;
-                post.blogId = blogId;
-                return true;
-            }
-            else {
-                return false;
-            }
+            const result = yield postCollection
+                .updateOne({ id: id }, { $set: { title: title, shortDescription: shortDescription, content: content, blogId: blogId } });
+            return result.matchedCount === 1;
         });
     },
     deletePost(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            for (let i = 0; i < posts.length; i++) {
-                if (posts[i].id === id) {
-                    posts.splice(i, 1);
-                    return true;
-                }
-            }
-            return false;
+            const result = yield postCollection.deleteOne({ id: id });
+            return result.deletedCount === 1;
         });
     },
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
-            posts.splice(0);
+            const result = yield postCollection.deleteMany({});
             return true;
         });
     },
