@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepository = void 0;
-const db_1 = require("./db");
 let blogs = [
     {
         "id": "firstblog",
@@ -34,18 +33,13 @@ let blogs = [
 exports.blogsRepository = {
     getBlogByID(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield db_1.client.db("blogsAndPosts").collection("blog").findOne({ id: id });
-            if (blog) {
-                return blog;
-            }
-            else {
-                return null;
-            }
+            let blog = blogs.find(b => b.id === id);
+            return blog;
         });
     },
     getAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.client.db("blogsAndPosts").collection("blog").find({}).toArray();
+            return blogs;
         });
     },
     createBlog(name, description, websiteUrl) {
@@ -56,28 +50,38 @@ exports.blogsRepository = {
                 "description": description,
                 "websiteUrl": websiteUrl
             };
-            const result = yield db_1.client.db("blogsAndPosts").collection("blog").insertOne(newBlog);
+            blogs.push(newBlog);
             return newBlog;
         });
     },
     updateBlog(id, name, description, websiteUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.client.db("blogsAndPosts").collection("blog")
-                .updateOne({ id: id }, { $set: { name: name, description: description, websiteUrl: websiteUrl } });
-            return result.matchedCount === 1;
+            let blog = blogs.find(b => b.id === id);
+            if (blog) {
+                blog.name = name;
+                blog.description = description;
+                blog.websiteUrl = websiteUrl;
+                return true;
+            }
+            else {
+                return false;
+            }
         });
     },
     deleteBlog(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.client.db("blogsAndPosts").collection("blog")
-                .deleteOne({ id: id });
-            return result.deletedCount === 1;
+            for (let i = 0; i < blogs.length; i++) {
+                if (blogs[i].id === id) {
+                    blogs.splice(i, 1);
+                    return true;
+                }
+            }
+            return false;
         });
     },
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.client.db("blogsAndPosts").collection("blog")
-                .deleteMany({});
+            blogs.splice(0);
             return true;
         });
     },
