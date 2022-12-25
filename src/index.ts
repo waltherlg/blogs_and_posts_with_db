@@ -5,6 +5,8 @@ import {videosRouter} from "./routes/videos-route";
 import {blogsRouter} from "./routes/blogs-route";
 import {postsRouter} from "./routes/posts-route";
 import {testingRouter} from "./routes/testing-route";
+import {runDb} from "./repositories/db";
+
 const bodyParser = require('body-parser');
 const fs = require("fs");
 var path = require('path');
@@ -21,7 +23,7 @@ app.use('/posts', postsRouter)
 
 
 const startApp = async () => {
-    await runDB()
+    await runDb()
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`)
     })
