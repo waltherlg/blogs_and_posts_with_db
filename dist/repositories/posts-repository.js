@@ -18,7 +18,8 @@ let posts = [
         "shortDescription": "post of music",
         "content": "content1",
         "blogId": "blogId1",
-        "blogName": "Bob's trambon"
+        "blogName": "Bob's trambon",
+        "createdAt": "2022-12-26T13:28:10.174Z"
     },
     {
         "id": "2",
@@ -26,7 +27,8 @@ let posts = [
         "shortDescription": "shortDescription2",
         "content": "content2",
         "blogId": "blogId2",
-        "blogName": "blogName2"
+        "blogName": "blogName2",
+        "createdAt": "2022-13-26T13:28:10.174Z"
     },
     {
         "id": "3",
@@ -34,7 +36,8 @@ let posts = [
         "shortDescription": "shortDescription2",
         "content": "content3",
         "blogId": "blogId3",
-        "blogName": "blogName3"
+        "blogName": "blogName3",
+        "createdAt": "2022-14-26T13:28:10.174Z"
     },
 ];
 const postCollection = db_1.client.db("blogsAndPosts").collection("post");
@@ -68,13 +71,15 @@ exports.postsRepository = {
     },
     createPost(title, shortDescription, content, blogId) {
         return __awaiter(this, void 0, void 0, function* () {
+            let date;
             const newPost = {
                 "id": (+(new Date())).toString(),
                 "title": title,
                 "shortDescription": shortDescription,
                 "content": content,
                 "blogId": blogId,
-                "blogName": content + " " + title
+                "blogName": content + " " + title,
+                "createdAt": new Date().toString()
             };
             const result = yield postCollection.insertOne(newPost);
             return newPost;

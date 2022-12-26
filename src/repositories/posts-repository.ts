@@ -7,7 +7,8 @@ type postType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
+    blogName: string,
+    createdAt: string
 }
 let posts: Array<postType> = [
     {
@@ -16,7 +17,8 @@ let posts: Array<postType> = [
         "shortDescription": "post of music",
         "content": "content1",
         "blogId": "blogId1",
-        "blogName": "Bob's trambon"
+        "blogName": "Bob's trambon",
+        "createdAt": "2022-12-26T13:28:10.174Z"
     },
     {
         "id": "2",
@@ -24,7 +26,8 @@ let posts: Array<postType> = [
         "shortDescription": "shortDescription2",
         "content": "content2",
         "blogId": "blogId2",
-        "blogName": "blogName2"
+        "blogName": "blogName2",
+        "createdAt": "2022-13-26T13:28:10.174Z"
     },
     {
         "id": "3",
@@ -32,7 +35,8 @@ let posts: Array<postType> = [
         "shortDescription": "shortDescription2",
         "content": "content3",
         "blogId": "blogId3",
-        "blogName": "blogName3"
+        "blogName": "blogName3",
+        "createdAt": "2022-14-26T13:28:10.174Z"
     },
 
 ]
@@ -66,13 +70,15 @@ export const postsRepository = {
     },
 
     async createPost(title: string, shortDescription: string, content: string, blogId: string): Promise<postType> {
+        let date;
         const newPost: any = {
             "id": (+(new Date())).toString(),
             "title": title,
             "shortDescription": shortDescription,
             "content": content,
             "blogId": blogId,
-            "blogName": content + " " + title
+            "blogName": content + " " + title,
+            "createdAt": new Date().toString()
         }
         const result = await postCollection.insertOne(newPost)
         return newPost

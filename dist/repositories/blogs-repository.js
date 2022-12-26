@@ -16,19 +16,22 @@ let blogs = [
         "id": "firstblog",
         "name": "name1",
         "description": "description1",
-        "websiteUrl": "websiteUrl"
+        "websiteUrl": "websiteUrl",
+        "createdAt": "2022-12-26T13:28:10.174Z"
     },
     {
         "id": "2",
         "name": "name2",
         "description": "description2",
-        "websiteUrl": "websiteUrl"
+        "websiteUrl": "websiteUrl",
+        "createdAt": "2022-13-26T13:28:10.174Z"
     },
     {
         "id": "3",
         "name": "name3",
         "description": "description3",
-        "websiteUrl": "websiteUrl"
+        "websiteUrl": "websiteUrl",
+        "createdAt": "2022-14-26T13:28:10.174Z"
     }
 ];
 exports.blogsRepository = {
@@ -54,7 +57,8 @@ exports.blogsRepository = {
                 "id": (+(new Date())).toString(),
                 "name": name,
                 "description": description,
-                "websiteUrl": websiteUrl
+                "websiteUrl": websiteUrl,
+                "createdAt": new Date().toString()
             };
             const result = yield db_1.client.db("blogsAndPosts").collection("blog").insertOne(newBlog);
             return newBlog;
