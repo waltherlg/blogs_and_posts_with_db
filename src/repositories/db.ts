@@ -1,13 +1,17 @@
 import {MongoClient} from "mongodb";
+import * as dotenv from 'dotenv'
+dotenv.config()
 
-const mongoUri = process.env.mongoUri || "mongodb://0.0.0.0:27017";
+const mongoUri = process.env.MONGO_URL
+if(!mongoUri){
+    throw new Error('URL not found')
+}
 
 export const client = new MongoClient(mongoUri);
 
 export async function runDb(){
     try {
         await client.connect()
-        await client.db("blog").command({ping: 1});
         console.log("Connected successfully to mongo server")
     }
     catch {

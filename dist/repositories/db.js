@@ -11,13 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runDb = exports.client = void 0;
 const mongodb_1 = require("mongodb");
-const mongoUri = process.env.mongoUri || "mongodb://0.0.0.0:27017";
+const mongoUri = "mongodb+srv://adminRuslan:qwertyRuslan@cluster0.5pqww7t.mongodb.net/?retryWrites=true&w=majority";
 exports.client = new mongodb_1.MongoClient(mongoUri);
 function runDb() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield exports.client.connect();
-            yield exports.client.db("blog").command({ ping: 1 });
             console.log("Connected successfully to mongo server");
         }
         catch (_a) {
