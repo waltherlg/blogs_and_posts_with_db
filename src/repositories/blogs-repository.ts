@@ -53,7 +53,7 @@ export const blogsRepository = {
             "name": name,
             "description": description,
             "websiteUrl": websiteUrl,
-            "createdAt": new Date().toString()
+            "createdAt": new Date().toISOString()
         }
         const result = await client.db("blogsAndPosts").collection<blogType>("blog").insertOne(newBlog)
         return newBlog

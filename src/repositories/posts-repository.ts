@@ -70,7 +70,6 @@ export const postsRepository = {
     },
 
     async createPost(title: string, shortDescription: string, content: string, blogId: string): Promise<postType> {
-        let date;
         const newPost: any = {
             "id": (+(new Date())).toString(),
             "title": title,
@@ -78,7 +77,7 @@ export const postsRepository = {
             "content": content,
             "blogId": blogId,
             "blogName": content + " " + title,
-            "createdAt": new Date().toString()
+            "createdAt": new Date().toISOString()
         }
         const result = await postCollection.insertOne(newPost)
         return newPost

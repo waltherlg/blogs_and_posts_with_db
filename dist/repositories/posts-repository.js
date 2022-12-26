@@ -79,7 +79,7 @@ exports.postsRepository = {
                 "content": content,
                 "blogId": blogId,
                 "blogName": content + " " + title,
-                "createdAt": new Date().toString()
+                "createdAt": new Date().toISOString()
             };
             const result = yield postCollection.insertOne(newPost);
             return newPost;
